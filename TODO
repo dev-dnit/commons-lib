@@ -1,0 +1,190 @@
+keycloack
+obter km
+
+OK - api snv
+OK - enum UFs
+OK - formatBr (int, string)
+OK - Regiões com base na uf
+OK - Distância entre coordenadas
+OK - Coordenada brazil
+
+# logs
+# urls
+
+
+https://gist.github.com/rgiaviti/510c260164ea25ef0449209f26560c3d
+https://github.com/caelum/caelum-stella/blob/master/stella-nfe/src/main/java/br/com/caelum/stella/nfe/Estados.java
+
+
+https://gist.github.com/vananth22/888ed9a22105670e7a4092bdcf0d72e4
+@Component
+public class DistanceCalculator {
+
+    private static final double EARTH_RADIUS_METER = 6371000;
+
+    /**
+     * Calculate the distance between two points on the Earth's surface using Haversine formula
+     * @return distance in meters between two points
+     * @see <a href="https://en.wikipedia.org/wiki/Haversine_formula">Haversine formula</a>
+     */
+    public double calculateDistanceInMeters(double startLat, double startLon, double endLat, double endLon) {
+        double deltaLat = Math.toRadians(endLat - startLat);
+        double deltaLong = Math.toRadians(endLon - startLon);
+
+        double a = haversine(deltaLat)
+                 + (Math.cos(Math.toRadians(startLat)) * Math.cos(Math.toRadians(endLat)) * haversine(deltaLong));
+
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        return EARTH_RADIUS_METER * c;
+    }
+
+    private double haversine(double val) {
+        return Math.pow(Math.sin(val / 2), 2);
+    }
+
+}
+
+
+package com.pepsico.loyalty.configuration.infrastructure.utils;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.data.Offset.offset;
+
+import org.assertj.core.data.Percentage;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import com.pepsico.loyalty.configuration.application.utils.DistanceCalculator;
+
+@ExtendWith(MockitoExtension.class)
+class DistanceCalculatorTest {
+
+    @InjectMocks
+    private DistanceCalculator calculator;
+
+    @Nested
+    class CalculateDistanceInMeters {
+
+        private final double tolerance = 0.0001;
+
+        @Test
+        @DisplayName("Calculate distance in meters between two points")
+        void calculateDistanceInMeters() {
+            // given
+            double startLat = 52.2296756;
+            double startLon = 21.0122287;
+            double endLat = 52.406374;
+            double endLon = 16.9251681;
+
+            // when
+            double distance = calculator.calculateDistanceInMeters(startLat, startLon, endLat, endLon);
+
+            // then
+            assertThat(distance).isCloseTo(278458.17507541943, offset(tolerance));
+        }
+
+        @Test
+        @DisplayName("Calculate distance in meters between two coordinates that are close to each other")
+        void calculateDistanceInMetersBetweenCloseCoordinates() {
+            // given
+            double startLat = 52.22;
+            double startLon = 21.01;
+            double endLat = 52.22;
+            double endLon = 21.015;
+
+            // when
+            double distance = calculator.calculateDistanceInMeters(startLat, startLon, endLat, endLon);
+
+            // then
+            assertThat(distance).isCloseTo(340.6074067571155, offset(tolerance));
+        }
+
+        @Test
+        @DisplayName("Calculate distance in meters between two points with same coordinates")
+        void calculateDistanceInMetersWithSameCoordinates() {
+            // given
+            double startLat = 52.2296756;
+            double startLon = 21.0122287;
+            double endLat = 52.2296756;
+            double endLon = 21.0122287;
+
+            // when
+            double distance = calculator.calculateDistanceInMeters(startLat, startLon, endLat, endLon);
+
+            // then
+            assertThat(distance).isCloseTo(0.0, offset(tolerance));
+        }
+
+        @Test
+        @DisplayName("Calculate distance in meters between two points with negative coordinates")
+        void calculateDistanceInMetersWithNegativeCoordinates() {
+            // given
+            double startLat = -52.2296756;
+            double startLon = -21.0122287;
+            double endLat = -52.406374;
+            double endLon = -16.9251681;
+
+            // when
+            double distance = calculator.calculateDistanceInMeters(startLat, startLon, endLat, endLon);
+
+            // then
+            assertThat(distance).isCloseTo(278458.17507541943, offset(tolerance));
+        }
+
+        @ParameterizedTest(name = "Coord ({0}, {1}) is approx {4} m away from Coord ({2},{3})")
+        // Lat, lon (degrees) and distances (in meters) from Toronto line 1 subway stations
+        @CsvSource({
+                "43.78036491854214,-79.4152304011896,43.76887793870783,-79.4130321306538,1250",
+                "43.76887793870783,-79.4130321306538,43.762117633060015,-79.41048793734598,768",
+                "43.762117633060015,-79.41048793734598,43.74324436641461,-79.40598708639664,2170",
+                "43.74324436641461,-79.40598708639664,43.72534824706468,-79.40225623671466,2010",
+                "43.72534824706468,-79.40225623671466,43.70604048012411,-79.39856202939211,2180",
+                "43.70604048012411,-79.39856202939211,43.69792346434252,-79.3967008548474,915",
+                "43.69792346434252,-79.3967008548474,43.688156950507235,-79.3925935193127,1180",
+                "43.688156950507235,-79.3925935193127,43.68293284527349,-79.38919753624873,600",
+                "43.68293284527349,-79.38919753624873,43.67757431572608,-79.38709820130461,600",
+                "43.67757431572608,-79.38709820130461,43.67124339867933,-79.38551990491634,710",
+                "43.67124339867933,-79.38551990491634,43.66565613357172,-79.38358905839254,640",
+                "43.66565613357172,-79.38358905839254,43.66146504061141,-79.3827441653126,470",
+                "43.66146504061141,-79.3827441653126,43.656466851194985,-79.38027784547215,600",
+                "43.656466851194985,-79.38027784547215,43.652410021047125,-79.37956043923451,445",
+                "43.652410021047125,-79.37956043923451,43.64916370183018,-79.37791628473086,400",
+                "43.64916370183018,-79.37791628473086,43.64538282940779,-79.38068905379633,475",
+                "43.64538282940779,-79.38068905379633,43.64784294407534,-79.38438143465719,445",
+                "43.64784294407534,-79.38438143465719,43.65062311963042,-79.38729440975027,380",
+                "43.65062311963042,-79.38729440975027,43.655089175006694,-79.38836729024115,470",
+                "43.655089175006694,-79.38836729024115,43.66002285018928,-79.39015185330648,580",
+                "43.66002285018928,-79.39015185330648,43.666992560960864,-79.39372817271455,820",
+                "43.666992560960864,-79.39372817271455,43.66826084998258,-79.39983428249295,520",
+                "43.66826084998258,-79.39983428249295,43.66716557412525,-79.40439660689606,380",
+                "43.66716557412525,-79.40439660689606,43.674989231526354,-79.40652891206821,890",
+                "43.674989231526354,-79.40652891206821,43.68428363626566,-79.41492116541377,1240",
+                "43.68428363626566,-79.41492116541377,43.6995188255893,-79.4350891371612,2370",
+                "43.6995188255893,-79.4350891371612,43.70894819089378,-79.43950472792726,1130",
+                "43.70894819089378,-79.43950472792726,43.71578478569428,-79.44439459545944,800",
+                "43.71578478569428,-79.44439459545944,43.72469091307056,-79.44717087060477,1030",
+                "43.72469091307056,-79.44717087060477,43.73450196286796,-79.45034691503619,1120",
+                "43.73450196286796,-79.45034691503619,43.74969488875701,-79.46221939583049,1960",
+                "43.74969488875701,-79.46221939583049,43.753540667455205,-79.4788188950485,1390",
+                "43.753540667455205,-79.4788188950485,43.76403012043636,-79.49156746557048,1550",
+                "43.76403012043636,-79.49156746557048,43.77717362270881,-79.5106991163887,2100",
+                "43.77717362270881,-79.5106991163887,43.78351111744403,-79.52298273045342,1260",
+                "43.78351111744403,-79.52298273045342,43.79424883311475,-79.52718285062606,1260",
+        })
+        void calculateDistanceWith10PercentTolerance(double lat1, double lon1, double lat2, double lon2, int distance) {
+
+            double result = calculator.calculateDistanceInMeters(lat1, lon1, lat2, lon2);
+
+            assertThat(result).isCloseTo(distance, Percentage.withPercentage(10));
+        }
+
+    }
+
+}
