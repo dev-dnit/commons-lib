@@ -1,150 +1,136 @@
 package dnit.commons.api
 
-class ApiResult<T> {
-    var result: T? = null
-    var info: InfoResult? = null
-    var stackTrace: String? = null
-    var pagination: PageMetadata? = null
+
+/**
+ * Api Result
+ * Classe padrão para retorno de resultados de APIs
+ *
+ * @param T Tipo de dado retornado no campo [result]
+ * @property result Resultado principal da requisição
+ * @property info Informações adicionais sobre a resposta, como mensagens ou status
+ * @property stackTrace Exceção ou erro que ocorreu durante o processamento da requisição
+ * @property pagination Metadados de paginação, quando aplicável
+ */
+data class ApiResult<T>(
+
+    val result : T? = null,
+    val info : InfoResult? = null,
+    val pagination : PageMetadata? = null,
+    val stackTrace : Throwable? = null,
+
+) {
 
     companion object {
 
         @JvmStatic
-        fun <T> success(result: T): ApiResult<T> {
-            val newResult = ApiResult<T>();
-            newResult.result = result;
+        fun <T> success(
+            result : T? = null
+        ) = ApiResult(
+            result = result,
+            info = InfoResult(InfoType.SUCCESS, null)
+        )
 
-            newResult.info = InfoResult()
-            newResult.info!!.type = InfoType.SUCCESS
-
-            return newResult
-        }
 
         @JvmStatic
-        fun <T> success(result: T, message: String): ApiResult<T> {
-            val newResult = ApiResult<T>();
-            newResult.result = result;
+        fun <T> success(
+            result : T? = null,
+            message : String? = null
+        ) = ApiResult(
+            result = result,
+            info = InfoResult(InfoType.SUCCESS, message)
+        )
 
-            newResult.info = InfoResult()
-            newResult.info!!.message = message
-            newResult.info!!.type = InfoType.SUCCESS
-
-            return newResult
-        }
 
         @JvmStatic
-        fun <T> success(result: T, pagination: PageMetadata? = null, message: String? = null): ApiResult<T> {
-            val newResult = ApiResult<T>();
-            newResult.result = result;
-            newResult.pagination = pagination;
+        fun <T> success(
+            result : T? = null,
+            pagination : PageMetadata? = null
+        ) = ApiResult(
+            result = result,
+            pagination = pagination,
+            info = InfoResult(InfoType.SUCCESS, null)
+        )
 
-            newResult.info = InfoResult()
-            newResult.info!!.message = message
-            newResult.info!!.type = InfoType.SUCCESS
-
-            return newResult
-        }
 
         @JvmStatic
-        fun <T> success(result: T, pagination: PageMetadata? = null): ApiResult<T> {
-            val newResult = ApiResult<T>();
-            newResult.result = result;
-            newResult.pagination = pagination;
+        fun <T> success(
+            result : T? = null,
+            message : String? = null,
+            pagination : PageMetadata? = null,
+        ) = ApiResult(
+            result = result,
+            pagination = pagination,
+            info = InfoResult(InfoType.SUCCESS, message),
+        )
 
-            newResult.info = InfoResult()
-            newResult.info!!.type = InfoType.SUCCESS
-
-            return newResult
-        }
-
-        @JvmStatic
-        fun <T> info(result: T, message: String): ApiResult<T> {
-            val newResult = ApiResult<T>();
-            newResult.result = result;
-            newResult.info = InfoResult()
-            newResult.info!!.message = message
-            newResult.info!!.type = InfoType.INFO
-
-            return newResult
-        }
 
         @JvmStatic
-        fun <T> info(result: T, message: String, stackTrace: String): ApiResult<T> {
-            val newResult = ApiResult<T>();
-            newResult.result = result;
-            newResult.stackTrace = stackTrace;
-            newResult.info = InfoResult()
-            newResult.info!!.message = message
-            newResult.info!!.type = InfoType.INFO
+        @JvmOverloads
+        fun <T> info(
+            result : T? = null,
+            message : String? = null,
+            pagination : PageMetadata? = null,
+        ) = ApiResult(
+            result = result,
+            info = InfoResult(InfoType.INFO, message),
+            pagination = pagination
+        )
 
-            return newResult
-        }
-
-        @JvmStatic
-        fun <T> error(message: String): ApiResult<T> {
-            val newResult = ApiResult<T>();
-            newResult.result = null;
-            newResult.info = InfoResult();
-            newResult.info!!.message = message;
-            newResult.info!!.type = InfoType.ERROR;
-            return newResult
-        }
 
         @JvmStatic
-        fun <T> error(message: String, stackTrace: String): ApiResult<T> {
-            val newResult = ApiResult<T>();
-            newResult.result = null;
-            newResult.info = InfoResult();
-            newResult.stackTrace = stackTrace;
-            newResult.info!!.message = message;
-            newResult.info!!.type = InfoType.ERROR;
-            return newResult
-        }
+        fun <T> error(
+            message : String? = null
+        ) = ApiResult(
+            result = null,
+            info = InfoResult(InfoType.ERROR, message)
+        )
+
 
         @JvmStatic
-        fun <T> warning(message: String): ApiResult<T> {
-            val newResult = ApiResult<T>();
-            newResult.result = null;
-            newResult.info = InfoResult();
-            newResult.info!!.message = message;
-            newResult.info!!.type = InfoType.WARNING;
-            return newResult
-        }
+        fun <T> error(
+            message : String? = null,
+            stackTrace : Throwable? = null,
+        ) = ApiResult(
+            result = null,
+            info = InfoResult(InfoType.ERROR, message),
+            stackTrace = stackTrace
+        )
+
 
         @JvmStatic
-        fun <T> warning(message: String, stackTrace: String): ApiResult<T> {
-            val newResult = ApiResult<T>();
-            newResult.result = null;
-            newResult.info = InfoResult();
-            newResult.stackTrace = stackTrace;
-            newResult.info!!.message = message;
-            newResult.info!!.type = InfoType.WARNING;
-            return newResult
+        fun <T> warn(
+            message : String? = null
+        ) = ApiResult(
+            result = null,
+            info = InfoResult(InfoType.WARNING, message)
+        )
+
+
+        @JvmStatic
+        fun <T> warn(
+            message : String? = null,
+            stackTrace : Throwable? = null,
+        ) = ApiResult(
+            result = null,
+            info = InfoResult(InfoType.WARNING, message),
+            stackTrace = stackTrace
+        )
+
+    }
+
+
+    /**
+     * Lança a exceção armazenada em [stackTrace], se ela existir.
+     * Utilizada para propagar erros que ocorreram durante o processamento da requisição.
+     * Ao triggar a exception, o stackTrace sai da pilha de execução e volta para o Handler,
+     * construindo adequadamente a resposta da API.
+     */
+    fun throwError() {
+        if (stackTrace != null) {
+            throw stackTrace
+        } else {
+            throw IllegalStateException("Nenhum erro para lançar; stackTrace é nulo.")
         }
     }
-}
 
-enum class InfoType {
-    SUCCESS,
-    INFO,
-    ERROR,
-    WARNING,
-    NORMAL
-}
-
-class InfoResult {
-    var type: InfoType = InfoType.NORMAL;
-    var message: String? = null
-}
-
-class PageMetadata {
-    var count: Int = 0;
-    var total: Int = 0;
-    var pages: Int = 0;
-    var currentPage: Int = 0;
-
-    val hasNextPage: Boolean
-        get() = currentPage < total
-
-    val hasPreviousPage: Boolean
-        get() = currentPage > 0
 }
