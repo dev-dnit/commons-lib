@@ -9,12 +9,14 @@ package dnit.commons.api
  * @property pages Número total de páginas disponíveis
  * @property currentPage Página atual
  */
-class PageMetadata {
+data class PageMetadata(
 
-    var count : Int = 0;
-    var total : Int = 0;
-    var pages : Int = 0;
-    var currentPage : Int = 0;
+    var count : Int = 0,
+    var total : Int = 0,
+    var pages : Int = 0,
+    var currentPage : Int = 0,
+
+) {
 
     val hasNextPage : Boolean
         get() = currentPage < total
