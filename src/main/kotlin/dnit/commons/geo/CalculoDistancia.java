@@ -36,7 +36,7 @@ public final class CalculoDistancia {
             || !isValidLongitude(a_longitude)
             || !isValidLongitude(b_longitude)
         ) {
-            throw new CommonException("Valores de coordenadas não podem ser nulos");
+            throw new CommonException("Valores de coordenadas não podem ser inválidos");
         }
 
         double deltaLatitude = toRadians(b_latitude - a_latitude);

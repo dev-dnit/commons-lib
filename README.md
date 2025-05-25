@@ -16,11 +16,12 @@ Desenvolvida em Java/Kotlin.
   
 
 - 🔍 **Validações via Anotações**
-    - Anotações customizadas para validação automática de campos como `@ValidUF`, `@ValidBR`, `@ValidBRs`, `@ValidUFs`, `@ValidRegiao`, `@ValidRegioes`
+    - Anotações customizadas para validação automática de campos como `@ValidUF`, `@ValidBR`, `@ValidBRs`, `@ValidUFs`, `@ValidRegiao`, `@ValidRegioes`, `@ValidLatitude`, `@ValidLongitude` e `@ValidAltimetria`
   
 
 - 🌍 **Validação Geográfica**
-    - Cálculo de distância entre dois pontos geográficos (Lat/Lng)
+    - Validação de coordenadas válidas (Latitude/Longitude/Altimetria)
+    - Cálculo de distância entre dois pontos geográficos (Latitude/Longitude)
     - Verificação se uma coordenada está dentro do território brasileiro
   
 
