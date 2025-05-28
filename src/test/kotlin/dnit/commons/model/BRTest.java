@@ -23,8 +23,9 @@ class BRTest {
     void testValidBR_Boundaries() {
         assertTrue(BR.isValidBR("010")); // limite inferior válido
         assertTrue(BR.isValidBR("490")); // limite superior válido
+        assertTrue(BR.isValidBR("499")); // limite superior válido
         assertFalse(BR.isValidBR("009")); // abaixo do limite
-        assertFalse(BR.isValidBR("491")); // acima do limite
+        assertFalse(BR.isValidBR("500")); // acima do limite
     }
 
 
@@ -80,6 +81,7 @@ class BRTest {
     void testSanitizeBr_Boundaries() {
         assertEquals("010", BR.sanitizeBr(10));
         assertEquals("490", BR.sanitizeBr(490));
+        assertEquals("499", BR.sanitizeBr(499));
     }
 
 
@@ -102,8 +104,8 @@ class BRTest {
 
     @Test
     void testSanitizeBr_InvalidHigh() {
-        CommonException exception = assertThrows(CommonException.class, () -> BR.sanitizeBr(491));
-        assertTrue(exception.getMessage().contains("Não foi possível sanitizar a BR: 491"));
+        CommonException exception = assertThrows(CommonException.class, () -> BR.sanitizeBr(500));
+        assertTrue(exception.getMessage().contains("Não foi possível sanitizar a BR: 500"));
     }
 
 

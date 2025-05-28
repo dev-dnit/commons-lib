@@ -22,7 +22,7 @@ public final class BR {
 
         try {
             int value = Integer.parseInt(br);
-            return value >= 10 && value <= 490;
+            return value >= 10 && value <= 499;
 
         } catch (NumberFormatException e) {
             return false;
