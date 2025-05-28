@@ -19,7 +19,7 @@ data class ApiResult<T>(
     val stackTrace : Throwable? = null,
 
 ) {
-    var validationError : T? = null
+    var validation : T? = null
 
     companion object {
 
@@ -96,7 +96,7 @@ data class ApiResult<T>(
                 result = null,
                 info = InfoResult(InfoType.ERROR, message)
             ).apply {
-                validationError = validations
+                validation = validations
             }
         }
 
