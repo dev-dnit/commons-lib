@@ -13,10 +13,11 @@ Desenvolvida em Java/Kotlin.
     - `BR` (Rodovias Federais)
     - `UF` (Unidades Federativas)
     - `Região` (Geográficas)
+    - `SNV` 
   
 
 - 🔍 **Validações via Anotações**
-    - Anotações customizadas para validação automática de campos como `@ValidUF`, `@ValidBR`, `@ValidBRs`, `@ValidUFs`, `@ValidRegiao`, `@ValidRegioes`, `@ValidLatitude`, `@ValidLongitude` e `@ValidAltimetria`
+    - Anotações customizadas para validação automática de campos como `@ValidUF`, `@ValidBR`, `@ValidBRs`, `@ValidUFs`, `@ValidRegiao`, `@ValidRegioes`, `@ValidSNV`, `@ValidSNVs` `@ValidLatitude`, `@ValidLongitude` e `@ValidAltimetria`
   
 
 - 🌍 **Validação Geográfica**
