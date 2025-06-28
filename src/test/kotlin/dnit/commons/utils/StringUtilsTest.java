@@ -357,4 +357,39 @@ class StringUtilsTest {
     }
 
 
+    @Nested
+    class HasContent {
+
+        @Test
+        void testNullString() {
+            assertFalse(StringUtils.hasContent(null));
+        }
+
+
+        @Test
+        void testEmptyString() {
+            assertFalse(StringUtils.hasContent(""));
+        }
+
+
+        @Test
+        void testBlankString() {
+            assertFalse(StringUtils.hasContent("   "));
+        }
+
+
+        @Test
+        void testNonEmptyString() {
+            assertTrue(StringUtils.hasContent("OpenAI"));
+        }
+
+
+        @Test
+        void testStringWithSpacesAroundText() {
+            assertTrue(StringUtils.hasContent("  text  "));
+        }
+
+    }
+
+
 }

@@ -54,7 +54,7 @@ public final class NanoIdUtils {
 
 
     private static String generatePseudoUUID(final int size) {
-        final int minLengthToAddDashes = DASH_STEP * 2 -1;
+        final int minLengthToAddDashes = DASH_STEP * 2 - 1;
         final int totalSize = size + (size / DASH_STEP);
         final char[] id = new char[totalSize];
 

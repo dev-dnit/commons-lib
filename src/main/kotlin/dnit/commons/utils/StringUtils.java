@@ -12,6 +12,15 @@ public final class StringUtils {
     /**
      * Verifica se a string é nula ou vazia
      */
+    public static boolean hasContent(String s) {
+        return !isNullOrEmpty(s);
+    }
+
+
+
+    /**
+     * Verifica se a string é nula ou vazia
+     */
     public static boolean isNullOrEmpty(String s) {
         return s == null || s.isBlank();
     }
