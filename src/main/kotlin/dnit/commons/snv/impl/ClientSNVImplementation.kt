@@ -5,7 +5,7 @@ import dnit.commons.geo.ValidadorCoordenadas
 import dnit.commons.model.internal.MiniTrechoSNV
 import dnit.commons.model.internal.RotaSNV
 import dnit.commons.snv.SNVResponse
-import dnit.commons.utils.runWithRetry
+import dnit.commons.utils.runSuspendableWithRetry
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
@@ -23,7 +23,7 @@ internal object ClientSNVImplementation {
 
 
 
-    fun obtemVersaoSnvAtual(): String? {
+    suspend fun obtemVersaoSnvAtual(): String? {
         val dataAtual = formataData(null)
 
         return obtemVersaoSnv(dataAtual)
@@ -32,8 +32,8 @@ internal object ClientSNVImplementation {
 
 
 
-    fun obtemVersaoSnv(dataReferencia: String): String? {
-        val rotas = runWithRetry(
+    suspend fun obtemVersaoSnv(dataReferencia: String): String? {
+        val rotas = runSuspendableWithRetry(
             callable = { ApiGeoClientImpl.fetchRota(-16.621117,-49.207783, 10_000.0, dataReferencia) },
             maxRetries = 3,
             delayMs = 1_000L,
@@ -45,7 +45,7 @@ internal object ClientSNVImplementation {
 
 
 
-    fun obtemSnvs(
+    suspend fun obtemSnvs(
         lat : Double,
         lng : Double,
         uf : String?,
@@ -55,7 +55,7 @@ internal object ClientSNVImplementation {
         maxBuffer: Double,
         retryCount: Int,
         retryDelayMs: Long,
-    ): List<SNVResponse?> {
+    ): List<SNVResponse> {
         val data = formataData(dataReferencia)
         val (buffer, rotas) = obtemRotasSnv(lat, lng, data,
                                   startBuffer, maxBuffer,
@@ -72,19 +72,19 @@ internal object ClientSNVImplementation {
                 retryDelayMs
             )
         }
-        .sortedWith(compareBy<SNVResponse?> { it?.uf != uf }
-            .thenBy { it?.br != br }
-            .thenBy { it?.snv == null }
-            .thenBy { it?.snv }
-            .thenBy { it?.uf }
-            .thenBy { it?.br }
-            .thenBy { it?.tipo }
+        .sortedWith(compareBy<SNVResponse> { it.uf != uf }
+            .thenBy { it.br != br }
+            .thenBy { it.snv == null }
+            .thenBy { it.snv }
+            .thenBy { it.uf }
+            .thenBy { it.br }
+            .thenBy { it.tipo }
         )
 
     }
 
 
-    private fun obtemRotasSnv(
+    private suspend fun obtemRotasSnv(
         lat : Double,
         lng : Double,
         dataReferencia : String,
@@ -104,7 +104,7 @@ internal object ClientSNVImplementation {
 
         for (buffer in generateBufferSequence(startBuffer, maxBuffer, retryCount)) {
             usedBuffer = buffer
-            val result = runWithRetry(
+            val result = runSuspendableWithRetry(
                 callable = { ApiGeoClientImpl.fetchRota(lat, lng, buffer, dataReferencia) },
                 maxRetries = retryCount,
                 delayMs = retryDelayMs,
@@ -122,7 +122,7 @@ internal object ClientSNVImplementation {
 
 
 
-    private fun toSnvResponse(
+    private suspend fun toSnvResponse(
         lat : Double,
         lng : Double,
         rota : RotaSNV,
@@ -138,7 +138,7 @@ internal object ClientSNVImplementation {
             cacheMiniTrechos.obtemCacheOrFetch(rota.uf, rota.br, rota.sgTpTrecho, dataReferencia
             ) {
                 if ("B" != rota.sgTpTrecho) return@obtemCacheOrFetch emptyList()
-                runWithRetry(
+                runSuspendableWithRetry(
                     callable = {
                         ApiGeoClientImpl.fetchTrecho(
                             rota.uf,

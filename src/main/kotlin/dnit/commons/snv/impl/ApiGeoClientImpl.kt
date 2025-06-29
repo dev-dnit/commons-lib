@@ -8,6 +8,9 @@ import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URI
 import java.net.URLEncoder
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
+import kotlinx.coroutines.withContext
 
 /**
  * Client responsável por se comunicar com a API do VGEO e retornar os dados de SNV
@@ -19,15 +22,14 @@ internal object ApiGeoClientImpl {
     private val baseUrlSnvs = "https://servicos.dnit.gov.br/sgplan/apigeo/snv/trechos"
 
 
-    internal fun fetchTrecho(
-        uf : String,
-        br : String,
+    internal suspend fun fetchTrecho(
+        uf: String,
+        br: String,
         tipo: String,
-        dataReferencia : String,
-        connectionTimeoutMs : Int = 15_000,
-        readTimeoutMs : Int = 30_000,
-    ) : List<MiniTrechoSNV> {
-
+        dataReferencia: String,
+        connectionTimeoutMs: Int = 15_000,
+        readTimeoutMs: Int = 30_000,
+    ): List<MiniTrechoSNV> = withContext(Dispatchers.IO) {
         // Build query parameters
         val params = mapOf(
             "uf" to uf,
@@ -39,7 +41,7 @@ internal object ApiGeoClientImpl {
         val queryString = params.entries.joinToString("&") { "${it.key}=${it.value}" }
         val fullSnvUrl = "$baseUrlSnvs?$queryString"
 
-        return try {
+        try {
             val url = URI(fullSnvUrl).toURL()
             val connection = url.openConnection() as HttpURLConnection
 
@@ -58,20 +60,18 @@ internal object ApiGeoClientImpl {
                     val reader = BufferedReader(InputStreamReader(connection.inputStream))
                     val response = reader.use { it.readText() }
 
-                    // Parse JSON response manually (simple parsing)
+                    // Parse JSON response manually
                     parseTrechoResponse(response)
                 }
 
-                HttpURLConnection.HTTP_NOT_FOUND -> {
-                    return emptyList()
-                }
+                HttpURLConnection.HTTP_NOT_FOUND -> emptyList()
 
-                else -> {
-                    throw CommonException("Erro ao obter trechos: $responseCode - ${connection.responseMessage} - $fullSnvUrl")
-                }
+                else -> throw CommonException(
+                    "Erro ao obter trechos: $responseCode - ${connection.responseMessage} - $fullSnvUrl"
+                )
             }
 
-        } catch (e : Exception) {
+        } catch (e: Exception) {
             if (e is CommonException) throw e
             throw CommonException("Erro ao obter trechos SNV", e)
         }
@@ -79,16 +79,14 @@ internal object ApiGeoClientImpl {
 
 
 
-    internal fun fetchRota(
-        lat : Double,
-        lng : Double,
-        bufferM : Double,
-        dataReferencia : String,
-        connectionTimeoutMs : Int = 15_000,
-        readTimeoutMs : Int = 30_000,
-    ) : List<RotaSNV> {
-
-        // Build query parameters
+    internal suspend fun fetchRota(
+        lat: Double,
+        lng: Double,
+        bufferM: Double,
+        dataReferencia: String,
+        connectionTimeoutMs: Int = 15_000,
+        readTimeoutMs: Int = 30_000,
+    ): List<RotaSNV> = withContext(Dispatchers.IO) {
         val params = mapOf(
             "lng" to lng.toString(),
             "lat" to lat.toString(),
@@ -99,7 +97,7 @@ internal object ApiGeoClientImpl {
         val queryString = params.entries.joinToString("&") { "${it.key}=${it.value}" }
         val fullUrl = "$baseUrlRotas?$queryString"
 
-        return try {
+        try {
             val url = URI(fullUrl).toURL()
             val connection = url.openConnection() as HttpURLConnection
 
@@ -117,23 +115,17 @@ internal object ApiGeoClientImpl {
                 HttpURLConnection.HTTP_OK -> {
                     val reader = BufferedReader(InputStreamReader(connection.inputStream))
                     val response = reader.use { it.readText() }
-
-                    // Parse JSON response manually (simple parsing)
                     parseRotaResponse(response)
                 }
 
-                HttpURLConnection.HTTP_NOT_FOUND -> {
-                    return emptyList()
-                }
+                HttpURLConnection.HTTP_NOT_FOUND -> emptyList()
 
-                else -> {
-                    throw CommonException("Erro ao obter rotas: $responseCode - ${connection.responseMessage} - $fullUrl")
-                }
+                else -> throw CommonException("Erro ao obter rotas: $responseCode - ${connection.responseMessage} - $fullUrl")
             }
 
-        } catch (e : Exception) {
+        } catch (e: Exception) {
             if (e is CommonException) throw e
-            throw CommonException("Erro ao obter snv", e)
+            throw CommonException("Erro ao obter SNV", e)
         }
     }
 

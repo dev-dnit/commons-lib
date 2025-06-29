@@ -11,12 +11,12 @@ class CacheMiniTrechos(private val maxItems : Int = 10) {
 
 
 
-    internal fun obtemCacheOrFetch(
+    internal suspend fun obtemCacheOrFetch(
         uf : String,
         br : String,
         tipo : String,
         data : String,
-        fetcher: () -> List<MiniTrechoSNV>
+        fetcher: suspend () -> List<MiniTrechoSNV>
     ) : List<MiniTrechoSNV> {
         val cacheKey = key(uf, br, tipo, data)
 
