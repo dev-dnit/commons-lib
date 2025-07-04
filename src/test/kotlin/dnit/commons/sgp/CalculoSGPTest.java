@@ -173,12 +173,6 @@ class CalculoSGPTest {
 
 
         @Test
-        void deveLancarExcecaoParaICSZero() {
-            assertThrows(CommonException.class, () -> CalculoSGP.getConceitoICS(0.0));
-        }
-
-
-        @Test
         void deveLancarExcecaoParaICSMaiorQue5ComDelta() {
             assertThrows(CommonException.class, () -> CalculoSGP.getConceitoICS(5.02));
         }

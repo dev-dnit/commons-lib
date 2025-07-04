@@ -49,21 +49,11 @@ public enum Conceito {
      * @see ConceitoSimplificado
      */
     public ConceitoSimplificado toConceitoSimplificado() {
-        switch (this) {
-
-            case OTIMO:
-            case BOM:
-                return ConceitoSimplificado.BOM;
-
-            case REGULAR:
-                return ConceitoSimplificado.REGULAR;
-
-            case RUIM:
-            case PESSIMO:
-                return ConceitoSimplificado.RUIM;
-
-            default: throw new CommonException("Conceito desconhecido: " + this);
-        }
+        return switch (this) {
+            case OTIMO, BOM -> ConceitoSimplificado.BOM;
+            case REGULAR -> ConceitoSimplificado.REGULAR;
+            case RUIM, PESSIMO -> ConceitoSimplificado.RUIM;
+        };
     }
 
 }

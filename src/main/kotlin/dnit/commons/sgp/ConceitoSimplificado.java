@@ -10,6 +10,6 @@ public enum ConceitoSimplificado {
 
     BOM,
     REGULAR,
-    RUIM;
+    RUIM
 
 }

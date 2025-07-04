@@ -40,8 +40,8 @@ object ClientSNV {
      * @return Versão do SNV encontrada ou null se não encontrada
      */
     @JvmStatic
-    fun obtemVersaoSnvBlocking(data: String) : String? = runBlocking {
-        ClientSNVImplementation.obtemVersaoSnv(data)
+    fun obtemVersaoSnvBlocking(dataReferencia: String) : String? = runBlocking {
+        ClientSNVImplementation.obtemVersaoSnv(dataReferencia)
     }
 
 
@@ -52,8 +52,8 @@ object ClientSNV {
      * @param dataReferencia Data a ser consultada, no formato 'yyyy-MM-dd'
      * @return Versão do SNV encontrada ou null se não encontrada
      */
-    suspend fun obtemVersaoSnv(data: String) : String? {
-        return ClientSNVImplementation.obtemVersaoSnv(data)
+    suspend fun obtemVersaoSnv(dataReferencia: String) : String? {
+        return ClientSNVImplementation.obtemVersaoSnv(dataReferencia)
     }
 
 

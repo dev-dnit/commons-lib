@@ -57,6 +57,7 @@ public final class CollectionUtils {
     /**
      * Transforma um array de itens em um Set.
      */
+    @SafeVarargs
     public static <T> Set<T> toSet(T... items) {
         if (items == null) {
             return Collections.emptySet();

@@ -80,7 +80,6 @@ internal object ClientSNVImplementation {
             .thenBy { it.br }
             .thenBy { it.tipo }
         )
-
     }
 
 

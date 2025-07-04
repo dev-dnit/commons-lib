@@ -66,7 +66,7 @@ public final class CalculoSGP {
      * Obtém conceito ICS a partir do valor ICS
      */
     public static Conceito getConceitoICS(final Double valorICS) {
-        if (valorICS == null || valorICS <= 0) {
+        if (valorICS == null || valorICS < 0) {
             throw new CommonException("ICS não pode ser nulo ou negativo");
         }
 
