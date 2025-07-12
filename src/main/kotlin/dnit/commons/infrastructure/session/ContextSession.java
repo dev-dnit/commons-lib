@@ -20,7 +20,7 @@ public class ContextSession {
      * Identificador único da sessão.
      * Gerado automaticamente no início da sessão para correlação e rastreamento.
      */
-    public final String sessionId;
+    private String sessionId;
 
 
 
@@ -93,6 +93,10 @@ public class ContextSession {
         return TimerUtils.duracaoEntreDoisInstants(startTime, endTime);
     }
 
+
+    public String getSessionId() {
+        return sessionId;
+    }
 
 
     public String getStartTime() {
