@@ -11,42 +11,42 @@ package dnit.commons.api
  * @property stackTrace Exceção ou erro que ocorreu durante o processamento da requisição
  * @property pagination Metadados de paginação, quando aplicável
  */
-data class ApiResult<T>(
+data class ApiResponse(
 
-    val result : T? = null,
+    val result : Any? = null,
     val info : InfoResult? = null,
     val pagination : PageMetadata? = null,
     val stackTrace : Throwable? = null,
+    val validation : Any? = null
 
 ) {
-    var validation : T? = null
 
     companion object {
 
         @JvmStatic
-        fun <T> success(
-            result : T? = null
-        ) = ApiResult(
+        fun success(
+            result : Any? = null
+        ) = ApiResponse(
             result = result,
             info = InfoResult(InfoType.SUCCESS, null)
         )
 
 
         @JvmStatic
-        fun <T> success(
-            result : T? = null,
+        fun success(
+            result : Any? = null,
             message : String? = null
-        ) = ApiResult(
+        ) = ApiResponse(
             result = result,
             info = InfoResult(InfoType.SUCCESS, message)
         )
 
 
         @JvmStatic
-        fun <T> success(
-            result : T? = null,
+        fun success(
+            result : Any? = null,
             pagination : PageMetadata? = null
-        ) = ApiResult(
+        ) = ApiResponse(
             result = result,
             pagination = pagination,
             info = InfoResult(InfoType.SUCCESS, null)
@@ -54,11 +54,11 @@ data class ApiResult<T>(
 
 
         @JvmStatic
-        fun <T> success(
-            result : T? = null,
+        fun success(
+            result : Any? = null,
             message : String? = null,
             pagination : PageMetadata? = null,
-        ) = ApiResult(
+        ) = ApiResponse(
             result = result,
             pagination = pagination,
             info = InfoResult(InfoType.SUCCESS, message),
@@ -67,11 +67,11 @@ data class ApiResult<T>(
 
         @JvmStatic
         @JvmOverloads
-        fun <T> info(
-            result : T? = null,
+        fun info(
+            result : Any? = null,
             message : String? = null,
             pagination : PageMetadata? = null,
-        ) = ApiResult(
+        ) = ApiResponse(
             result = result,
             info = InfoResult(InfoType.INFO, message),
             pagination = pagination
@@ -79,33 +79,32 @@ data class ApiResult<T>(
 
 
         @JvmStatic
-        fun <T> error(
+        fun error(
             message : String? = null
-        ) = ApiResult(
+        ) = ApiResponse(
             result = null,
             info = InfoResult(InfoType.ERROR, message)
         )
 
 
         @JvmStatic
-        fun <T> validationError(
+        fun validationError(
             message: String? = null,
-            validations: T? = null,
-        ): ApiResult<T> {
-            return ApiResult<T>(
+            validations: Any? = null,
+        ): ApiResponse{
+            return ApiResponse(
                 result = null,
-                info = InfoResult(InfoType.ERROR, message)
-            ).apply {
+                info = InfoResult(InfoType.ERROR, message),
                 validation = validations
-            }
+            )
         }
 
 
         @JvmStatic
-        fun <T> error(
+        fun error(
             message : String? = null,
             stackTrace : Throwable? = null,
-        ) = ApiResult(
+        ) = ApiResponse(
             result = null,
             info = InfoResult(InfoType.ERROR, message),
             stackTrace = stackTrace
@@ -113,19 +112,19 @@ data class ApiResult<T>(
 
 
         @JvmStatic
-        fun <T> warn(
+        fun warn(
             message : String? = null
-        ) = ApiResult(
+        ) = ApiResponse(
             result = null,
             info = InfoResult(InfoType.WARNING, message)
         )
 
 
         @JvmStatic
-        fun <T> warn(
+        fun warn(
             message : String? = null,
             stackTrace : Throwable? = null,
-        ) = ApiResult(
+        ) = ApiResponse(
             result = null,
             info = InfoResult(InfoType.WARNING, message),
             stackTrace = stackTrace

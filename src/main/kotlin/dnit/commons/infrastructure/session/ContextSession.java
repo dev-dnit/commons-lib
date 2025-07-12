@@ -13,7 +13,7 @@ import java.time.Instant;
  * Pode ser utilizado para controle de tempo de execução, rastreamento de sessão,
  * correlação de logs e outras funcionalidades relacionadas ao ciclo de vida da requisição.
  */
-public final class ContextSession {
+public class ContextSession {
 
 
     /**

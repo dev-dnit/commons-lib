@@ -8,10 +8,9 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
-class ApiResultJavaTest {
+class ApiResponseJavaTest {
 
 
     @Nested
@@ -19,7 +18,7 @@ class ApiResultJavaTest {
 
         @Test
         void testDefaultConstructor() {
-            ApiResult<String> defaultConstructor = new ApiResult<>();
+            ApiResponse defaultConstructor = new ApiResponse();
             assertNotNull(defaultConstructor);
             assertNull(defaultConstructor.getResult());
             assertNull(defaultConstructor.getInfo());
@@ -29,7 +28,7 @@ class ApiResultJavaTest {
 
         @Test
         void testSuccessConstructorWithResult() {
-            ApiResult<String> success1 = ApiResult.success("test");
+            ApiResponse success1 = ApiResponse.success("test");
             assertNotNull(success1);
             assertEquals("test", success1.getResult());
             assertEquals(InfoType.SUCCESS, success1.getInfo().getType());
@@ -41,7 +40,7 @@ class ApiResultJavaTest {
         @Test
         void testSuccessConstructorWithListAsResult() {
             List<String> list = List.of("test1", "test2");
-            ApiResult<List<String>> success1 = ApiResult.success(list);
+            ApiResponse success1 = ApiResponse.success(list);
             assertNotNull(success1);
             assertEquals(list, success1.getResult());
             assertEquals(InfoType.SUCCESS, success1.getInfo().getType());
@@ -52,7 +51,7 @@ class ApiResultJavaTest {
 
         @Test
         void testSuccessConstructorWithResultAndMessage() {
-            ApiResult<String> success2 = ApiResult.success("test", "message");
+            ApiResponse success2 = ApiResponse.success("test", "message");
             assertNotNull(success2);
             assertEquals("test", success2.getResult());
             assertEquals(InfoType.SUCCESS, success2.getInfo().getType());
@@ -64,7 +63,7 @@ class ApiResultJavaTest {
         @Test
         void testSuccessConstructorWithResultAndPagination() {
             PageMetadata pagination = new PageMetadata();
-            ApiResult<String> success3 = ApiResult.success("test", pagination);
+            ApiResponse success3 = ApiResponse.success("test", pagination);
             assertNotNull(success3);
             assertEquals("test", success3.getResult());
             assertEquals(InfoType.SUCCESS, success3.getInfo().getType());
@@ -76,7 +75,7 @@ class ApiResultJavaTest {
         @Test
         void testSuccessConstructorWithAllParameters() {
             PageMetadata pagination = new PageMetadata();
-            ApiResult<String> success4 = ApiResult.success("test", "message", pagination);
+            ApiResponse success4 = ApiResponse.success("test", "message", pagination);
             assertNotNull(success4);
             assertEquals("test", success4.getResult());
             assertEquals(InfoType.SUCCESS, success4.getInfo().getType());
@@ -92,7 +91,7 @@ class ApiResultJavaTest {
 
         @Test
         void testInfoConstructorWithResult() {
-            ApiResult<String> info1 = ApiResult.info("test");
+            ApiResponse info1 = ApiResponse.info("test");
             assertNotNull(info1);
             assertEquals("test", info1.getResult());
             assertEquals(InfoType.INFO, info1.getInfo().getType());
@@ -104,7 +103,7 @@ class ApiResultJavaTest {
 
         @Test
         void testInfoConstructorWithResultAndMessage() {
-            ApiResult<String> info2 = ApiResult.info("test", "message");
+            ApiResponse info2 = ApiResponse.info("test", "message");
             assertNotNull(info2);
             assertEquals("test", info2.getResult());
             assertEquals(InfoType.INFO, info2.getInfo().getType());
@@ -117,7 +116,7 @@ class ApiResultJavaTest {
         @Test
         void testInfoConstructorWithListAsResultAndMessage() {
             var list = List.of("test1", "test2");
-            ApiResult<List<String>> info2 = ApiResult.info(list, "message");
+            ApiResponse info2 = ApiResponse.info(list, "message");
             assertNotNull(info2);
             assertEquals(list, info2.getResult());
             assertEquals(InfoType.INFO, info2.getInfo().getType());
@@ -134,7 +133,7 @@ class ApiResultJavaTest {
 
         @Test
         void testErrorConstructorWithResult() {
-            ApiResult<String> error1 = ApiResult.error("test");
+            ApiResponse error1 = ApiResponse.error("test");
             assertNotNull(error1);
             assertNotNull(error1.getInfo());
             assertEquals("test", error1.getInfo().getMessage());
@@ -151,7 +150,7 @@ class ApiResultJavaTest {
 
         @Test
         void testWarnConstructorWithResult() {
-            ApiResult<String> warn1 = ApiResult.warn("test");
+            ApiResponse warn1 = ApiResponse.warn("test");
             assertNotNull(warn1);
             assertEquals("test", warn1.getInfo().getMessage());
             assertEquals(InfoType.WARNING, warn1.getInfo().getType());
@@ -163,7 +162,7 @@ class ApiResultJavaTest {
         @Test
         void testWarnConstructorWithResultMessageAndStackTrace() {
             Throwable throwable = new Throwable("test throwable");
-            ApiResult<String> warn3 = ApiResult.warn("test", throwable);
+            ApiResponse warn3 = ApiResponse.warn("test", throwable);
             assertNotNull(warn3);
             assertEquals("test", warn3.getInfo().getMessage());
             assertEquals(InfoType.WARNING, warn3.getInfo().getType());
