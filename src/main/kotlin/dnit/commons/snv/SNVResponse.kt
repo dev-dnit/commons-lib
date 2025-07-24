@@ -3,6 +3,7 @@ package dnit.commons.snv
 class SNVResponse {
     val snv : String?
     val versao : String?
+    
     val coincidencia : String?
     val uf : String?
     val br : String?
@@ -10,6 +11,8 @@ class SNVResponse {
     val tipo : String?
     val latitude : Double?
     val longitude : Double?
+
+    val km : Double?
 
 
     constructor(snv : String, versao : String?) {
@@ -23,6 +26,7 @@ class SNVResponse {
         this.tipo = null
         this.latitude = null
         this.longitude = null
+        this.km = null
     }
 
 
@@ -35,6 +39,7 @@ class SNVResponse {
         tipo : String?,
         latitude : Double?,
         longitude : Double?,
+        km : Double?
     ) {
         this.snv = snv
         this.versao = versao
@@ -44,6 +49,7 @@ class SNVResponse {
         this.tipo = tipo
         this.latitude = latitude
         this.longitude = longitude
+        this.km = km
     }
 
 

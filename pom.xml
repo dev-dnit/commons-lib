@@ -7,7 +7,7 @@
 
     <groupId>dnit.commons</groupId>
     <artifactId>commons-lib</artifactId>
-    <version>1.2.3</version>
+    <version>1.2.4</version>
 
 
     <name>Commons Library</name>
@@ -158,14 +158,14 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.13.2</version>
+            <version>5.13.4</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.mockito.kotlin</groupId>
             <artifactId>mockito-kotlin</artifactId>
-            <version>4.0.0</version>
+            <version>6.0.0</version>
             <scope>test</scope>
         </dependency>
 

@@ -94,7 +94,6 @@ internal object ClientSNVImplementation {
     ): Pair<Double, List<RotaSNV>> {
 
         var usedBuffer = 0.0
-        require(ValidadorCoordenadas.estaNoBrasil(lat, lng)) { "Coordenadas fora do Brasil" }
         require(dataReferencia.isNotBlank()) { "Data referencia deve ser preenchida"}
         require(startBuffer > 0) { "Buffer inicial deve ser positivo" }
         require(startBuffer <= maxBuffer) { "Buffer max deve ser maior ou igual ao buffer inicial" }
@@ -165,6 +164,7 @@ internal object ClientSNVImplementation {
                     tipo = rota.sgTpTrecho,
                     latitude = lat,
                     longitude = lng,
+                    rota.km
                 ))
             }
         }
@@ -186,6 +186,7 @@ internal object ClientSNVImplementation {
                     tipo = rota.sgTpTrecho,
                     latitude = lat,
                     longitude = lng,
+                    km = rota.km
                 ))
             }
         }
@@ -200,6 +201,7 @@ internal object ClientSNVImplementation {
             tipo = rota.sgTpTrecho,
             latitude = lat,
             longitude = lng,
+            km = rota.km,
         ))
     }
 
