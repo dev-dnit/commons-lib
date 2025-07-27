@@ -1,7 +1,6 @@
 package dnit.commons.snv.impl
 
 import dnit.commons.exception.CommonException
-import dnit.commons.geo.ValidadorCoordenadas
 import dnit.commons.model.internal.MiniTrechoSNV
 import dnit.commons.model.internal.RotaSNV
 import dnit.commons.snv.SNVResponse
@@ -23,7 +22,7 @@ internal object ClientSNVImplementation {
 
 
 
-    suspend fun obtemVersaoSnvAtual(): String? {
+    internal suspend fun obtemVersaoSnvAtual(): String? {
         val dataAtual = formataData(null)
 
         return obtemVersaoSnv(dataAtual)
@@ -32,7 +31,7 @@ internal object ClientSNVImplementation {
 
 
 
-    suspend fun obtemVersaoSnv(dataReferencia: String): String? {
+    internal suspend fun obtemVersaoSnv(dataReferencia: String): String? {
         val rotas = runSuspendableWithRetry(
             callable = { ApiGeoClientImpl.fetchRota(-16.621117,-49.207783, 10_000.0, dataReferencia) },
             maxRetries = 3,
@@ -45,7 +44,7 @@ internal object ClientSNVImplementation {
 
 
 
-    suspend fun obtemSnvs(
+    internal suspend fun obtemSnvs(
         lat : Double,
         lng : Double,
         uf : String?,
@@ -55,11 +54,12 @@ internal object ClientSNVImplementation {
         maxBuffer: Double,
         retryCount: Int,
         retryDelayMs: Long,
+        bufferList : List<Double>?,
     ): List<SNVResponse> {
         val data = formataData(dataReferencia)
         val (buffer, rotas) = obtemRotasSnv(lat, lng, data,
                                   startBuffer, maxBuffer,
-                                  retryCount, retryDelayMs)
+                                  retryCount, retryDelayMs, bufferList)
 
         return rotas.flatMap { rota ->
             toSnvResponse(
@@ -91,6 +91,7 @@ internal object ClientSNVImplementation {
         maxBuffer: Double,
         retryCount: Int,
         retryDelayMs: Long,
+        bufferList : List<Double>?,
     ): Pair<Double, List<RotaSNV>> {
 
         var usedBuffer = 0.0
@@ -100,7 +101,7 @@ internal object ClientSNVImplementation {
         require(retryCount >= 0) { "Número de tentativas deve ser maior ou igual a zero" }
         require(retryDelayMs >= 0) { "RetryDelay deve ser maior ou igual a zero" }
 
-        for (buffer in generateBufferSequence(startBuffer, maxBuffer, retryCount)) {
+        for (buffer in bufferList ?: generateBufferSequence(startBuffer, maxBuffer, retryCount)) {
             usedBuffer = buffer
             val result = runSuspendableWithRetry(
                 callable = { ApiGeoClientImpl.fetchRota(lat, lng, buffer, dataReferencia) },

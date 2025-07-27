@@ -5,7 +5,6 @@ package dnit.commons.api
  * Api Result
  * Classe padrão para retorno de resultados de APIs
  *
- * @param T Tipo de dado retornado no campo [result]
  * @property result Resultado principal da requisição
  * @property info Informações adicionais sobre a resposta, como mensagens ou status
  * @property stackTrace Exceção ou erro que ocorreu durante o processamento da requisição

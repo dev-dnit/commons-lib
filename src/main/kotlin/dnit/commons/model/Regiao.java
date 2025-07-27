@@ -45,7 +45,7 @@ public enum Regiao {
     public List<UF> ufsDaRegiao() {
         return Arrays.stream(UF.values())
                       .filter(uf -> uf.regiao == this)
-                      .collect(Collectors.toList());
+                      .toList();
     }
 
 }

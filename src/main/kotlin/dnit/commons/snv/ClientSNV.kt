@@ -74,6 +74,7 @@ object ClientSNV {
         maxBuffer: Double = 1_500.0,
         retryCount: Int = 4,
         retryDelay: Long = 1_000L,
+        bufferList: List<Double>? = null,
     ) : List<SNVResponse> = runBlocking {
         ClientSNVImplementation.obtemSnvs(
             lat = latitude,
@@ -85,6 +86,7 @@ object ClientSNV {
             maxBuffer = maxBuffer,
             retryCount = retryCount,
             retryDelayMs = retryDelay,
+            bufferList = bufferList,
         )
     }
 
@@ -104,6 +106,7 @@ object ClientSNV {
         maxBuffer: Double = 1_500.0,
         retryCount: Int = 4,
         retryDelay: Long = 1_000L,
+        bufferList: List<Double>? = null,
     ) : List<SNVResponse> {
         return ClientSNVImplementation.obtemSnvs(
             lat = latitude,
@@ -115,6 +118,7 @@ object ClientSNV {
             maxBuffer = maxBuffer,
             retryCount = retryCount,
             retryDelayMs = retryDelay,
+            bufferList = bufferList,
         )
     }
 

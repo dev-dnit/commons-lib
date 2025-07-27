@@ -4,7 +4,7 @@ import dnit.commons.model.internal.MiniTrechoSNV
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedQueue
 
-class CacheMiniTrechos(private val maxItems : Int = 10) {
+internal class CacheMiniTrechos(private val maxItems : Int = 10) {
 
     private val cache = ConcurrentHashMap<String, List<MiniTrechoSNV>>()
     private val insertionOrder = ConcurrentLinkedQueue<String>()
