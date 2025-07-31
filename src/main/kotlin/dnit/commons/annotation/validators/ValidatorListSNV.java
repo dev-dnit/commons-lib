@@ -1,7 +1,6 @@
 package dnit.commons.annotation.validators;
 
-import dnit.commons.annotation.ValidBRs;
-import dnit.commons.model.BR;
+import dnit.commons.annotation.ValidSNVs;
 import dnit.commons.model.SNV;
 import dnit.commons.utils.CollectionUtils;
 import jakarta.validation.ConstraintValidator;
@@ -10,7 +9,7 @@ import jakarta.validation.ConstraintValidatorContext;
 import java.util.List;
 
 
-public final class ValidatorListSNV implements ConstraintValidator<ValidBRs, List<String>> {
+public final class ValidatorListSNV implements ConstraintValidator<ValidSNVs, List<String>> {
 
     @Override
     public boolean isValid(List<String> values, ConstraintValidatorContext context) {

@@ -1,6 +1,6 @@
 package dnit.commons.annotation.validators;
 
-import dnit.commons.annotation.ValidUFs;
+import dnit.commons.annotation.ValidRegioes;
 import dnit.commons.model.Regiao;
 import dnit.commons.utils.CollectionUtils;
 import jakarta.validation.ConstraintValidator;
@@ -9,7 +9,7 @@ import jakarta.validation.ConstraintValidatorContext;
 import java.util.List;
 
 
-public final class ValidatorRegioes implements ConstraintValidator<ValidUFs, List<String>> {
+public final class ValidatorRegioes implements ConstraintValidator<ValidRegioes, List<String>> {
 
     @Override
     public boolean isValid(List<String> values, ConstraintValidatorContext context) {
