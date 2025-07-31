@@ -152,21 +152,32 @@ internal object ClientSNVImplementation {
                 )
             }
 
+        val epsilon = 0.0001
+
         for (trecho in trechoSnv) {
             val inicioTrecho = kmAcumulado
             kmAcumulado += trecho.extensao // final
-            if (rota.km >= inicioTrecho - bufferKm && rota.km <= kmAcumulado + bufferKm) {
-                listaResponse.add(SNVResponse(
-                    snv = trecho.trecho,
-                    versao = rota.versao,
-                    coincidencia = trecho.coincidencia,
-                    uf = rota.uf,
-                    br = rota.br,
-                    tipo = rota.sgTpTrecho,
-                    latitude = lat,
-                    longitude = lng,
-                    rota.km
-                ))
+
+            val isExactMatch = rota.km >= inicioTrecho && rota.km <= kmAcumulado
+
+            val isApproximateMatch = !isExactMatch
+                                   && rota.km + epsilon >= inicioTrecho
+                                   && rota.km - epsilon <= kmAcumulado
+
+            if (isExactMatch || isApproximateMatch) {
+                listaResponse.add(
+                    SNVResponse(
+                        snv = trecho.trecho,
+                        versao = rota.versao,
+                        coincidencia = trecho.coincidencia,
+                        uf = rota.uf,
+                        br = rota.br,
+                        tipo = rota.sgTpTrecho,
+                        latitude = lat,
+                        longitude = lng,
+                        km = rota.km
+                    )
+                )
             }
         }
 
