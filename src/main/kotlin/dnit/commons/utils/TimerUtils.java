@@ -45,11 +45,11 @@ public final class TimerUtils {
         long minutes = (uptimeInSeconds % SECONDS_IN_HOUR) / SECONDS_IN_MINUTE;
         long seconds = uptimeInSeconds % SECONDS_IN_MINUTE;
 
-        String result = (days > 0 ? days + " dias " : "") +
-                (hours > 0 ? hours + " horas " : "") +
-                (minutes > 0 ? minutes + " minutos " : "") +
-                (seconds > 0 ? seconds + " segundos " : "") +
-                millis + " ms";
+        String result = (days > 0 ? days + " dias " : "")
+                      + (hours > 0 ? hours + " horas " : "")
+                      + (minutes > 0 ? minutes + " minutos " : "")
+                      + (seconds > 0 ? seconds + " segundos " : "")
+                      + millis + " ms";
 
         return isNegative ? "-" + result.trim() : result;
     }

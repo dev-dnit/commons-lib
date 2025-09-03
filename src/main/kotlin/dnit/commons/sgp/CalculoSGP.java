@@ -63,30 +63,56 @@ public final class CalculoSGP {
 
 
     /**
-     * Obtém conceito ICS a partir do valor ICS
+     * Obtém conceito ICS a partir do valor ICS (Double)
      */
     public static Conceito getConceitoICS(final Double valorICS) {
-        if (valorICS == null || valorICS < 0) {
-            throw new CommonException("ICS não pode ser nulo ou negativo");
+        return getConceitoICSNumber(valorICS);
+    }
+
+
+
+    /**
+     * Obtém conceito ICS a partir do valor ICS (Integer)
+     */
+    public static Conceito getConceitoICSInt(final Integer valorICS) {
+        return getConceitoICSNumber(valorICS);
+    }
+
+
+
+    /**
+     * Obtém conceito ICS a partir do valor ICS (aceita Double ou Integer)
+     */
+    private static Conceito getConceitoICSNumber(final Number valorICS) {
+        if (valorICS == null) {
+            throw new CommonException("ICS não pode ser nulo");
         }
 
-        if (valorICS <= 1) {
+        final double valor = valorICS.doubleValue();
+
+        if (valor < 0) {
+            throw new CommonException("ICS não pode ser negativo");
+        }
+
+        final double delta = 0.0001;  // Delta para evitar erro de arredondamento
+
+        if (valor <= 1 + delta) {
             return Conceito.PESSIMO;
         }
 
-        if (valorICS <= 2) {
+        if (valor <= 2 + delta) {
             return Conceito.RUIM;
         }
 
-        if (valorICS <= 3) {
+        if (valor <= 3 + delta) {
             return Conceito.REGULAR;
         }
 
-        if (valorICS <= 4) {
+        if (valor <= 4 + delta) {
             return Conceito.BOM;
         }
 
-        if (valorICS <= 5 + 0.01) { // Delta para evitar erro de arredondamento
+        if (valor <= 5 + delta) {
             return Conceito.OTIMO;
         }
 

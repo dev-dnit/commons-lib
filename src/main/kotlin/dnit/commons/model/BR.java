@@ -16,15 +16,15 @@ public final class BR {
      * @return true se for um BR válido, false caso contrário.
      */
     public static boolean isValidBR(String br) {
-        if (br == null || !br.matches("\\d{3}")) {
-            return false;
-        }
-
         try {
+            if (br == null || !br.matches("\\d{3}")) {
+                return false;
+            }
+
             int value = Integer.parseInt(br);
             return value >= 10 && value <= 499;
 
-        } catch (NumberFormatException e) {
+        } catch (Exception e) {
             return false;
         }
     }
@@ -39,17 +39,17 @@ public final class BR {
             throw new CommonException("Não foi possível sanitizar a BR: " + input);
         }
 
-        // Remove tudo que não for número
-        String digitsOnly = input.replaceAll("\\D", "");
-
         try {
+            // Remove tudo que não for número
+            String digitsOnly = input.replaceAll("\\D", "");
+
             int value = Integer.parseInt(digitsOnly);
             String formatted = String.format("%03d", value);
 
             if (isValidBR(formatted)) {
                 return formatted;
             }
-        } catch (NumberFormatException ignored) {
+        } catch (Exception ignored) {
             // Ignorado, exceção tratada abaixo
         }
 

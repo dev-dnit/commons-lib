@@ -21,7 +21,6 @@ public final class SNV {
      * XXX + U + XX + XXXX
      */
     public static boolean isValidSNV(String snv) {
-
         // Check exact length (10 characters: XXX + U + XX + XXXX)
         if (snv == null || snv.length() != 10) {
             return false;
