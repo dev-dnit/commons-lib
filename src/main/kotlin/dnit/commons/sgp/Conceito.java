@@ -45,6 +45,19 @@ public enum Conceito {
 
 
     /**
+     * Retorna o conceito correspondente à nota fornecida.
+     */
+    public static Conceito fromDoubleNota(Double nota) {
+        if (nota == null) {
+            throw new CommonException("Nota não pode ser nula");
+        }
+
+        return CalculoSGP.getConceitoFromDoubleNota(nota);
+    }
+
+
+
+    /**
      * Retorna o conceito simplificado correspondente.
      * @see ConceitoSimplificado
      */

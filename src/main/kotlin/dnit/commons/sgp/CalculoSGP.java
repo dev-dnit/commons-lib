@@ -63,19 +63,28 @@ public final class CalculoSGP {
 
 
     /**
-     * Obtém conceito ICS a partir do valor ICS (Double)
+     * Obtém conceito a partir da nota (Double)
      */
-    public static Conceito getConceitoICS(final Double valorICS) {
-        return getConceitoICSNumber(valorICS);
+    public static Conceito getConceitoFromDoubleNota(final Double nota) {
+        return getConceitoFromNota(nota);
     }
 
 
 
     /**
-     * Obtém conceito ICS a partir do valor ICS (Integer)
+     * Obtém conceito a partir da nota (Integer)
      */
-    public static Conceito getConceitoICSInt(final Integer valorICS) {
-        return getConceitoICSNumber(valorICS);
+    public static Conceito getConceitoFromIntNota(final Integer nota) {
+        return getConceitoFromNota(nota);
+    }
+
+
+
+    /**
+     * Obtém conceito a partir da nota (Double)
+     */
+    public static Conceito getConceitoICS(final Double valorICS) {
+        return getConceitoFromNota(valorICS);
     }
 
 
@@ -83,15 +92,15 @@ public final class CalculoSGP {
     /**
      * Obtém conceito ICS a partir do valor ICS (aceita Double ou Integer)
      */
-    private static Conceito getConceitoICSNumber(final Number valorICS) {
-        if (valorICS == null) {
-            throw new CommonException("ICS não pode ser nulo");
+    private static Conceito getConceitoFromNota(final Number nota) {
+        if (nota == null) {
+            throw new CommonException("Nota não pode ser nulo");
         }
 
-        final double valor = valorICS.doubleValue();
+        final double valor = nota.doubleValue();
 
         if (valor < 0) {
-            throw new CommonException("ICS não pode ser negativo");
+            throw new CommonException("Nota não pode ser negativo");
         }
 
         final double delta = 0.0001;  // Delta para evitar erro de arredondamento
@@ -167,6 +176,24 @@ public final class CalculoSGP {
         }
         if (valorIRI > 2.5) {
             return Conceito.BOM;
+        }
+
+        return Conceito.OTIMO;
+    }
+
+
+
+    /**
+     * Obtém nota para cálculo do Conceito ATR a partir do valor de IRI
+     * Conceito
+     */
+    public static Conceito getConceitoATR(final Double valorATR) {
+        if (valorATR == null || valorATR < 0) {
+            throw new CommonException("ATR não pode ser nulo ou negativo");
+        }
+
+        if (valorATR > 5) {
+            return Conceito.PESSIMO;
         }
 
         return Conceito.OTIMO;

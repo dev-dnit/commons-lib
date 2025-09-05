@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
-class CalculoSGPTest {
+class CalculoSGPTest { 
 
     private static final double DELTA = 0.0001; // Allowing minor floating-point differences
 
@@ -122,105 +122,113 @@ class CalculoSGPTest {
 
 
     @Nested
-    class ConceitoICS {
+    class ConceitoFromDouble {
 
         @Test
         void deveRetornarPessimoParaICSMenorOuIgualA1() {
+            assertEquals(Conceito.PESSIMO, CalculoSGP.getConceitoFromDoubleNota(1.0));
             assertEquals(Conceito.PESSIMO, CalculoSGP.getConceitoICS(1.0));
         }
 
 
         @Test
         void deveRetornarRuimParaICSEntre1EMenorOuIgualA2() {
+            assertEquals(Conceito.RUIM, CalculoSGP.getConceitoFromDoubleNota(2.0));
             assertEquals(Conceito.RUIM, CalculoSGP.getConceitoICS(2.0));
         }
 
 
         @Test
         void deveRetornarRegularParaICSEntre2EMenorOuIgualA3() {
+            assertEquals(Conceito.REGULAR, CalculoSGP.getConceitoFromDoubleNota(3.0));
             assertEquals(Conceito.REGULAR, CalculoSGP.getConceitoICS(3.0));
         }
 
 
         @Test
         void deveRetornarBomParaICSEntre3EMenorOuIgualA4() {
+            assertEquals(Conceito.BOM, CalculoSGP.getConceitoFromDoubleNota(4.0));
             assertEquals(Conceito.BOM, CalculoSGP.getConceitoICS(4.0));
         }
 
 
         @Test
         void deveRetornarOtimoParaICSEntre4EMenorOuIgualA5() {
+            assertEquals(Conceito.OTIMO, CalculoSGP.getConceitoFromDoubleNota(5.0));
             assertEquals(Conceito.OTIMO, CalculoSGP.getConceitoICS(5.0));
         }
 
 
         @Test
         void deveRetornarOtimoParaICSComPequenoDeltaMaiorQue5() {
+            assertEquals(Conceito.OTIMO, CalculoSGP.getConceitoFromDoubleNota(5.000001));
             assertEquals(Conceito.OTIMO, CalculoSGP.getConceitoICS(5.000001));
         }
 
 
         @Test
         void deveLancarExcecaoParaICSNulo() {
+            assertThrows(CommonException.class, () -> CalculoSGP.getConceitoFromDoubleNota(null));
             assertThrows(CommonException.class, () -> CalculoSGP.getConceitoICS(null));
         }
 
 
         @Test
         void deveLancarExcecaoParaICSNegativo() {
+            assertThrows(CommonException.class, () -> CalculoSGP.getConceitoFromDoubleNota(-1.0));
             assertThrows(CommonException.class, () -> CalculoSGP.getConceitoICS(-1.0));
         }
 
 
         @Test
         void deveLancarExcecaoParaICSMaiorQue5ComDelta() {
-            assertThrows(CommonException.class, () -> CalculoSGP.getConceitoICS(5.02));
+            assertThrows(CommonException.class, () -> CalculoSGP.getConceitoFromDoubleNota(5.02));
         }
     }
 
 
     @Nested
-    class ConceitoICSInt {
+    class ConceitoFromInt {
 
         @Test
         void deveRetornarPessimoParaICSMenorOuIgualA1() {
-            assertEquals(Conceito.PESSIMO, CalculoSGP.getConceitoICSInt(1));
+            assertEquals(Conceito.PESSIMO, CalculoSGP.getConceitoFromIntNota(1));
         }
 
 
         @Test
         void deveRetornarRuimParaICSEntre1EMenorOuIgualA2() {
-            assertEquals(Conceito.RUIM, CalculoSGP.getConceitoICSInt(2));
+            assertEquals(Conceito.RUIM, CalculoSGP.getConceitoFromIntNota(2));
         }
 
 
         @Test
         void deveRetornarRegularParaICSEntre2EMenorOuIgualA3() {
-            assertEquals(Conceito.REGULAR, CalculoSGP.getConceitoICSInt(3));
+            assertEquals(Conceito.REGULAR, CalculoSGP.getConceitoFromIntNota(3));
         }
 
 
         @Test
         void deveRetornarBomParaICSEntre3EMenorOuIgualA4() {
-            assertEquals(Conceito.BOM, CalculoSGP.getConceitoICSInt(4));
+            assertEquals(Conceito.BOM, CalculoSGP.getConceitoFromIntNota(4));
         }
 
 
         @Test
         void deveRetornarOtimoParaICSEntre4EMenorOuIgualA5() {
-            assertEquals(Conceito.OTIMO, CalculoSGP.getConceitoICSInt(5));
+            assertEquals(Conceito.OTIMO, CalculoSGP.getConceitoFromIntNota(5));
         }
 
 
         @Test
         void deveLancarExcecaoParaICSNulo() {
-            assertThrows(CommonException.class, () -> CalculoSGP.getConceitoICSInt(null));
+            assertThrows(CommonException.class, () -> CalculoSGP.getConceitoFromIntNota(null));
         }
 
 
         @Test
         void deveLancarExcecaoParaICSNegativo() {
-            assertThrows(CommonException.class, () -> CalculoSGP.getConceitoICSInt(-1));
+            assertThrows(CommonException.class, () -> CalculoSGP.getConceitoFromIntNota(-1));
         }
     }
 
@@ -282,8 +290,38 @@ class CalculoSGPTest {
         }
 
     }
+    
+    
+    @Nested
+    class ConceitoATR {
+        @Test
+        void deveRetornarPessimoParaATRMaiorQue5() {
+            assertEquals(Conceito.PESSIMO, CalculoSGP.getConceitoATR(5.1));
+        }
 
+        @Test
+        void deveRetornarOtimoParaATRIgualA5() {
+            assertEquals(Conceito.OTIMO, CalculoSGP.getConceitoATR(5.0));
+        }
 
+        @Test
+        void deveRetornarOtimoParaATRMenorQue5() {
+            assertEquals(Conceito.OTIMO, CalculoSGP.getConceitoATR(0.0));
+            assertEquals(Conceito.OTIMO, CalculoSGP.getConceitoATR(3.0));
+        }
+
+        @Test
+        void deveLancarExcecaoParaATRNulo() {
+            assertThrows(CommonException.class, () -> CalculoSGP.getConceitoATR(null));
+        }
+
+        @Test
+        void deveLancarExcecaoParaATRNegativo() {
+            assertThrows(CommonException.class, () -> CalculoSGP.getConceitoATR(-0.1));
+        }
+    }
+    
+    
     @Nested
     class ConceitoIRI {
         @Test
