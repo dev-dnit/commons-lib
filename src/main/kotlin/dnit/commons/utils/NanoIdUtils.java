@@ -11,7 +11,9 @@ import java.security.SecureRandom;
  */
 public final class NanoIdUtils {
 
-    private static final SecureRandom NUMBER_GENERATOR = new SecureRandom();
+    private static class Holder {
+        static final SecureRandom NUMBER_GENERATOR = new SecureRandom();
+    }
 
     private static final int DEFAULT_SIZE = 15;
 
@@ -66,7 +68,7 @@ public final class NanoIdUtils {
             ) {
                 id[charIndex++] = '-';
             }
-            id[charIndex++] = ALPHABET[NUMBER_GENERATOR.nextInt(ALPHABET.length)];
+            id[charIndex++] = ALPHABET[Holder.NUMBER_GENERATOR.nextInt(ALPHABET.length)];
         }
 
         return new String(id).trim();
