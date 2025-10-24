@@ -161,8 +161,8 @@ internal object ClientSNVImplementation {
             val isExactMatch = rota.km >= inicioTrecho && rota.km <= kmAcumulado
 
             val isApproximateMatch = !isExactMatch
-                                   && rota.km + epsilon >= inicioTrecho
-                                   && rota.km - epsilon <= kmAcumulado
+                                   && rota.km + epsilon >= inicioTrecho - bufferKm
+                                   && rota.km - epsilon <= kmAcumulado + bufferKm
 
             if (isExactMatch || isApproximateMatch) {
                 listaResponse.add(
