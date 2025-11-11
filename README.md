@@ -47,6 +47,6 @@ Adicione a dependência no seu projeto Maven
 <dependency>
     <groupId>com.github.dev-dnit</groupId>
     <artifactId>commons-lib</artifactId>
-    <version>1.2.12</version>
+    <version>1.2.13</version>
 </dependency>
 ```
