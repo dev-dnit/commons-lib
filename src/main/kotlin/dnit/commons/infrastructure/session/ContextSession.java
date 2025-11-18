@@ -2,6 +2,7 @@ package dnit.commons.infrastructure.session;
 
 import dnit.commons.infrastructure.constant.LoggingConstants;
 import dnit.commons.utils.NanoIdUtils;
+import dnit.commons.utils.StringUtils;
 import dnit.commons.utils.TimerUtils;
 import org.jboss.logging.MDC;
 
@@ -42,6 +43,8 @@ public class ContextSession {
 
     public ContextSession() {
         this (NanoIdUtils.randomNanoId(10));
+        this.startTime = null;
+        this.endTime = null;
     }
 
 
@@ -51,6 +54,20 @@ public class ContextSession {
         this.startTime = null;
         this.endTime = null;
     }
+
+
+
+    /**
+     * Replace the sessionId in the ContextSession.
+     */
+    public ContextSession withSessionId(String sessionId) {
+        if(!StringUtils.isNullOrEmpty(sessionId)) {
+            this.sessionId = sessionId;
+        }
+
+        return this;
+    }
+
 
 
     /**
