@@ -10,6 +10,16 @@ class CalculoDistanciaPontoSegmentoTest {
 
     private static final double TOLERANCIA_METROS = 0.001; // tolerância numérica
 
+    @Test
+    void deveCalcularCorretamenteDistanciasEdgeCase() {
+        // Latitude inválida
+        var distancia1 = distancePontoAoSegmento(-22.79392490, -43.02873523, -22.79431152, -43.0303955099999, -22.79370117, -43.027771);
+        var distancia2 = distancePontoAoSegmento(-22.79392490, -43.02873523, -22.79370117, -43.027771, -22.79431152, -43.0303955099999);
+
+        assertEquals(distancia1, distancia2, TOLERANCIA_METROS);
+        assertEquals(0.0, distancia2, TOLERANCIA_METROS);
+    }
+
     // ---------- Casos básicos e de validação ----------
 
     @Test

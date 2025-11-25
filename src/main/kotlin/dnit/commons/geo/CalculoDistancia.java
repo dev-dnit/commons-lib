@@ -95,19 +95,19 @@ public final class CalculoDistancia {
         double[] c = { closest[0]/len, closest[1]/len, closest[2]/len };
 
         // Verifica se C está entre A e B (em termos de ângulo)
-        double angleAC = Math.acos(dot(a, c));
-        double angleCB = Math.acos(dot(c, b));
-        double angleAB = Math.acos(dot(a, b));
+        double angleAC = Math.acos(clamp(dot(a, c), -1.0, 1.0));
+        double angleCB = Math.acos(clamp(dot(c, b), -1.0, 1.0));
+        double angleAB = Math.acos(clamp(dot(a, b), -1.0, 1.0));
 
         if (angleAC + angleCB - angleAB < 1e-8) {
             // C está no segmento: distância P–C
-            double anglePC = Math.acos(dot(p, c));
+            double anglePC = Math.acos(clamp(dot(p, c), -1.0, 1.0));
             return anglePC * RAIO_TERRA_METROS;
         }
 
         // C está fora do segmento → usar menor distância a um dos vértices
-        double d1 = Math.acos(dot(p, a)) * RAIO_TERRA_METROS;
-        double d2 = Math.acos(dot(p, b)) * RAIO_TERRA_METROS;
+        double d1 = Math.acos(clamp(dot(p, a), -1.0, 1.0)) * RAIO_TERRA_METROS;
+        double d2 = Math.acos(clamp(dot(p, b), -1.0, 1.0)) * RAIO_TERRA_METROS;
 
         return Math.min(d1, d2);
     }
@@ -119,6 +119,13 @@ public final class CalculoDistancia {
      */
     private static double haversine(double val) {
         return Math.pow(Math.sin(val / 2), 2);
+    }
+
+
+
+    // Helper method to clamp values
+    private static double clamp(double value, double min, double max) {
+        return Math.max(min, Math.min(max, value));
     }
 
 
